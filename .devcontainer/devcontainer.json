@@ -1,0 +1,9 @@
+{
+  "name": "Moving4U Devcontainer",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:0-18",
+  "features": {},
+  "postCreateCommand": "npm install",
+  "forwardPorts": [8000],
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+}

@@ -1,0 +1,3 @@
+Sitemap: https://moving4u.x10hub.net/sitemap.xml
+User-agent: *
+Disallow:

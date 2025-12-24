@@ -1,0 +1,64 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install deps (for sitemap)
+        run: npm ci
+
+      - name: Generate sitemap
+        run: |
+          SITE_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}" npm run sitemap
+
+      - name: Prepare static artifact
+        run: |
+          rm -rf .pages-dist
+          mkdir -p .pages-dist
+          cp -r *.html styles.css app.js assets sitemap.xml robots.txt .pages-dist 2>/dev/null || true
+          # ensure privacy page and favicon (if present)
+          if [ -f privacy.html ]; then cp privacy.html .pages-dist/; fi
+          if [ -f favicon.ico ]; then cp favicon.ico .pages-dist/; fi
+          # Rewrite robots.txt with correct sitemap URL
+          SITE_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+          printf "Sitemap: %s/sitemap.xml\nUser-agent: *\nDisallow:\n" "$SITE_URL" > .pages-dist/robots.txt
+          # remove node_modules to keep artifact small
+          rm -rf node_modules
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .pages-dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

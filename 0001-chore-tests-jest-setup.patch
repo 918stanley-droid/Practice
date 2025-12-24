@@ -1,0 +1,100 @@
+*** Begin Patch
+*** Update File: package.json
+@@
+-  "scripts": {
+-    "lint": "eslint . --ext .js,.json",
+-    "test": "jest --coverage",
+-    "start": "npx http-server -p 8000"
+-  },
+-  "jest": {
+-    "testEnvironment": "jsdom"
+-  },
+-  "devDependencies": {
++  "scripts": {
++    "lint": "eslint . --ext .js,.json",
++    "test": "jest --coverage",
++    "start": "npx http-server -p 8000"
++  },
++  "jest": {
++    "testEnvironment": "jsdom",
++    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"]
++  },
++  "devDependencies": {
+@@
+-    "http-server": "^14.1.1",
+-    "jest": "^29.0.0",
+-    "jest-axe": "^6.1.1",
+-    "prettier": "^2.0.0"
++    "http-server": "^14.1.1",
++    "jest": "^29.0.0",
++    "jest-axe": "^6.0.1",
++    "jest-environment-jsdom": "^30.2.0",
++    "prettier": "^2.0.0"
+   }
+*** End Patch
+*** Begin Patch
+*** Add File: jest.setup.js
++// Suppress noisy console.error output from app during tests
++// Tests may intentionally trigger error paths; use a mock to keep test output clean
++beforeAll(() => {
++  jest.spyOn(console, 'error').mockImplementation(() => {});
++});
++
++afterAll(() => {
++  if (console.error.mockRestore) console.error.mockRestore();
++});
++
+*** End Patch
+*** Begin Patch
+*** Update File: __tests__/app.test.js
+@@
+-  beforeEach(() => {
+-    document.documentElement.innerHTML = html;
+-    // debug: check form fields before requiring app.js
+-    const formBefore = document.getElementById('leadForm');
+-    // eslint-disable-next-line no-console
+-    console.log('debug: formBefore has email?', !!(formBefore && formBefore.email));
+-    // require here so the module can attach/export after DOM is set
+-    initLeadForm = require('../app');
++  beforeEach(() => {
++    document.documentElement.innerHTML = html;
++    // require here so the module can attach/export after DOM is set
++    initLeadForm = require('../app');
+@@
+-    const form = document.getElementById('leadForm');
+-    const submitBtn = form.querySelector('button[type="submit"]');
+-    form.name.value = 'Test User';
+-    form.email.value = 'test@example.com';
++    const form = document.getElementById('leadForm');
++    const submitBtn = form.querySelector('button[type="submit"]');
++    const nameInput = form.querySelector('[name="name"]');
++    const emailInput = form.querySelector('[name="email"]');
++    nameInput.value = 'Test User';
++    emailInput.value = 'test@example.com';
++    const msg = document.getElementById('formMessage');
+@@
+-    const form = document.getElementById('leadForm');
+-    const submitBtn = form.querySelector('button[type="submit"]');
+-    form.name.value = 'Test User';
+-    form.email.value = 'test@example.com';
++    const form = document.getElementById('leadForm');
++    const submitBtn = form.querySelector('button[type="submit"]');
++    const nameInput = form.querySelector('[name="name"]');
++    const emailInput = form.querySelector('[name="email"]');
++    nameInput.value = 'Test User';
++    emailInput.value = 'test@example.com';
++    const msg = document.getElementById('formMessage');
+@@
+-    const form = document.getElementById('leadForm');
+-    form.name.value = 'Test User';
+-    form.email.value = 'test@example.com';
+-    const hp = form.querySelector('input[name="website"]');
+-    hp.value = 'http://spam.example';
++    const form = document.getElementById('leadForm');
++    const nameInput = form.querySelector('[name="name"]');
++    const emailInput = form.querySelector('[name="email"]');
++    nameInput.value = 'Test User';
++    emailInput.value = 'test@example.com';
++    const hp = form.querySelector('input[name="website"]');
++    hp.value = 'http://spam.example';
+*** End Patch

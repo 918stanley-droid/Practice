@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Moving 4U — Quick Quote</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header" role="banner">
+      <div class="container">
+        <h1 class="brand">Moving 4U</h1>
+        <nav class="nav" aria-hidden="true">&nbsp;</nav>
+      </div>
+    </header>
+
+    <div id="consentBanner" class="consent-banner" role="dialog" aria-live="polite" aria-label="Analytics consent" hidden>
+      <p class="consent-text">We use privacy-friendly analytics to improve the site. OK to enable?</p>
+      <div class="consent-actions">
+        <button type="button" class="btn-secondary" id="consentDecline">No, thanks</button>
+        <button type="button" class="btn-primary" id="consentAccept">Allow analytics</button>
+      </div>
+      <p class="consent-note">No personal data; IP is anonymized. You can change this anytime via your browser storage.</p>
+    </div>
+
+    <main id="main">
+      <section class="hero container">
+        <div class="hero-left">
+          <h2 class="headline">Stress‑Free Local Moves — Fast, Reliable, Affordable</h2>
+          <p class="subhead"></p>
+
+          <form id="leadForm" class="lead-form" data-endpoint="https://script.google.com/macros/s/AKfycby0Hq57bdivaic7_tXAYXnm82hSUfPS3MxB4paYLfQm9eJ1GL_DIzj0U3tGldi8csqA/exec" novalidate aria-describedby="formMessage">
+            <label class="sr-only" for="name">Full name</label>
+            <input id="name" name="name" type="text" placeholder="Full name" required />
+
+            <label class="sr-only" for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="Email address" required />
+
+            <label class="sr-only" for="phone">Phone</label>
+            <input id="phone" name="phone" type="tel" placeholder="Phone (optional)" />
+            <label class="sr-only" for="description">Brief description of move</label>
+            <textarea id="description" name="description" placeholder="Brief description of move (500 characters max)" maxlength="500"></textarea>
+
+            <!-- Honeypot anti-spam field (visually hidden from users) -->
+            <label class="honeypot" for="website">Leave this field empty</label>
+            <input id="website" name="website" type="text" class="honeypot" autocomplete="off" tabindex="-1" aria-hidden="true" />
+
+            <!-- Accessibility: indicate required fields explicitly -->
+            <script type="application/json" id="field-attrs">{"name":{"aria-required":true},"email":{"aria-required":true}}</script>
+
+            <button type="submit" class="btn-primary">Get Your Free Quote</button>
+            <p id="formMessage" class="form-message" aria-live="polite" role="status"></p>
+            <section class="how">
+              <h3>How It Works</h3>
+              <ol>
+                <li>Tell us about your move using the quick form.</li>
+                <li>Receive a free, no-obligation quote by email or phone.</li>
+                <li>One of our professional team members will handle the rest!</li>
+              </ol>
+            </section>
+            <p class="privacy-note">We respect your privacy — we only use your details to provide a quote and to contact you about this request. No spam. <a href="privacy.html">Privacy & Data Use</a></p>
+          </form>
+        </div>
+
+        <div class="hero-right">
+          <img src="assets/flyer.jpg" alt="Moving 4U flyer" />
+        </div>
+      </section>
+
+      <section class="testimonials container">
+        <h3>What Our Customers Say</h3>
+        <div class="testimonial-grid">
+          <blockquote class="testimonial" role="article" tabindex="0">
+            <p>"Moving 4U made our move effortless — on time, careful with our furniture, and surprisingly affordable. Highly recommend!"</p>
+            <cite>— Sarah L., Austin, TX</cite>
+          </blockquote>
+
+          <blockquote class="testimonial" role="article" tabindex="0">
+            <p>"Great communication and friendly crew. The quote was accurate and there were no surprise fees. Five stars."</p>
+            <cite>— Miguel R., Dallas, TX</cite>
+          </blockquote>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">© <span id="year"></span> Moving 4U — <a href="privacy.html">Privacy & Data Use</a></div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
