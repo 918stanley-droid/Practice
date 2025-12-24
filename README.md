@@ -84,7 +84,8 @@ npm start
 
 - Install Playwright browsers once: `npx playwright install`
 - Run E2E suite: `npm run test:e2e`
-- The Playwright config starts a local static server on port 4173 and stubs outbound requests to the Apps Script endpoint and Google Analytics.
+- The Playwright config starts a local static server on port 4173 and stubs outbound requests only to the Apps Script endpoint.
+- Analytics consent flows are intentionally excluded from E2E for determinism; the tests disable analytics via `localStorage.setItem('analytics-consent','denied')` before navigation.
 
 ## Deployment
 
