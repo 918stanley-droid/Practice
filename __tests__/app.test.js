@@ -5,16 +5,13 @@ const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
 describe('client form (app.js)', () => {
   let initLeadForm;
-  let initAnalyticsConsent;
 
   beforeEach(() => {
     document.documentElement.innerHTML = html;
     // require here so the module can attach/export after DOM is set
     const mod = require('../app');
     initLeadForm = mod.initLeadForm || window.initLeadForm;
-    initAnalyticsConsent = mod.initAnalyticsConsent || window.initAnalyticsConsent;
     if (typeof initLeadForm === 'function') initLeadForm();
-    if (typeof initAnalyticsConsent === 'function') initAnalyticsConsent();
   });
 
   afterEach(() => {
@@ -104,36 +101,4 @@ describe('client form (app.js)', () => {
     expect(msg.classList.contains('success')).toBe(true);
   });
 
-  describe('analytics consent', () => {
-    beforeEach(() => {
-      window.localStorage.clear();
-      document.body.dataset.analyticsId = 'G-TEST123';
-    });
-
-    test('shows banner when no stored consent', () => {
-      const banner = document.getElementById('consentBanner');
-      expect(banner.hidden).toBe(false);
-    });
-
-    test('accept loads analytics script and hides banner', () => {
-      const accept = document.getElementById('consentAccept');
-      accept.click();
-      const banner = document.getElementById('consentBanner');
-      const script = document.getElementById('ga-script');
-      expect(banner.hidden).toBe(true);
-      expect(script).toBeTruthy();
-      expect(script.src).toMatch(/G-TEST123/);
-      expect(window.localStorage.getItem('analytics-consent')).toBe('granted');
-    });
-
-    test('decline hides banner without loading analytics', () => {
-      const decline = document.getElementById('consentDecline');
-      decline.click();
-      const banner = document.getElementById('consentBanner');
-      const script = document.getElementById('ga-script');
-      expect(banner.hidden).toBe(true);
-      expect(script).toBeNull();
-      expect(window.localStorage.getItem('analytics-consent')).toBe('denied');
-    });
-  });
 });

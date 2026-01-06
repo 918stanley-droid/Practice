@@ -66,7 +66,6 @@ SITE_URL=https://moving4u.x10hub.net npm run sitemap
 - Client script: `app.js` (implements client-side form handling: validation, POST to Apps Script endpoint, success/error UI messages, and sets the current year in the footer).
 - Accessibility: added skip link, improved focus outlines for interactive elements, ARIA attributes on the form and live message, and automated accessibility tests (`jest-axe`).
 - Spam protection: added a hidden honeypot field; submissions with the honeypot filled are treated as spam client-side (ignored) and server-side (logged as SPAM).
-- Analytics (optional): opt-in consent banner that conditionally loads a GA4 tag when you set `data-analytics-id="YOUR_MEASUREMENT_ID"` on `<body>`; consent stored in localStorage; IP anonymized in config.
 - Server: form posts to a Google Apps Script endpoint; check `google_apps_script.gs` for the server-side implementation used to append leads to a Google Sheet.
 
 ## Running on your machine

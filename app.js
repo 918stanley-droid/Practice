@@ -1,74 +1,4 @@
 (function () {
-  function loadAnalytics(measurementId) {
-    if (!measurementId) return;
-    if (document.getElementById('ga-script')) return; // already loaded
-
-    const script = document.createElement('script');
-    script.id = 'ga-script';
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
-    document.head.appendChild(script);
-
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      window.dataLayer.push(arguments);
-    }
-    window.gtag = gtag;
-    gtag('js', new Date());
-    gtag('config', measurementId, { anonymize_ip: true });
-  }
-
-  function initAnalyticsConsent() {
-    const banner = document.getElementById('consentBanner');
-    if (!banner) return;
-
-    const acceptBtn = document.getElementById('consentAccept');
-    const declineBtn = document.getElementById('consentDecline');
-
-    const setHidden = (el, value) => {
-      if (!el) return;
-      el.hidden = value;
-      if (value) {
-        el.setAttribute('aria-hidden', 'true');
-      } else {
-        el.removeAttribute('aria-hidden');
-      }
-    };
-
-    const loadIfPermitted = (consentValue) => {
-      const measurementId = (document.body && document.body.dataset && document.body.dataset.analyticsId) || null;
-      if (consentValue === 'granted') {
-        loadAnalytics(measurementId);
-        setHidden(banner, true);
-      } else if (consentValue === 'denied') {
-        setHidden(banner, true);
-      } else {
-        setHidden(banner, false);
-      }
-    };
-
-    let stored = null;
-    try {
-      stored = window.localStorage.getItem('analytics-consent');
-    } catch (err) {
-      // ignore storage issues
-    }
-
-    loadIfPermitted(stored);
-
-    const handleChoice = (value) => {
-      try {
-        window.localStorage.setItem('analytics-consent', value);
-      } catch (err) {
-        // ignore storage issues
-      }
-      loadIfPermitted(value);
-    };
-
-    if (acceptBtn) acceptBtn.addEventListener('click', () => handleChoice('granted'));
-    if (declineBtn) declineBtn.addEventListener('click', () => handleChoice('denied'));
-  }
-
   function initLeadForm() {
     const yearEl = document.getElementById('year');
     if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -168,17 +98,14 @@
   if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
       initLeadForm();
-      initAnalyticsConsent();
     });
   }
 
   // Export for tests
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { initLeadForm, initAnalyticsConsent, loadAnalytics };
+    module.exports = { initLeadForm };
   }
   if (typeof window !== 'undefined') {
     window.initLeadForm = initLeadForm;
-    window.initAnalyticsConsent = initAnalyticsConsent;
-    window.loadAnalytics = loadAnalytics;
   }
 })();

@@ -18,7 +18,7 @@ body{
 }
 .container{max-width:var(--max-width);margin:0 auto;padding:1.25rem}
 .site-header{background:transparent;padding:1rem 0;border-bottom:2px solid var(--accent)}
-.brand{margin:0;font-size:1.5rem;font-weight:700;color:var(--accent-dark)}
+.brand{margin:0;font-size:clamp(3.5rem,5vw+1.2rem,4.5rem);line-height:1.05;font-weight:800;color:var(--accent-dark)}
 .hero{display:flex;gap:2rem;align-items:flex-start;padding:2rem 0}
 .hero-left{flex:1}
 .headline{font-size:2rem;font-weight:700;margin:0 0 .5rem;color:#1a1a1a}
@@ -40,11 +40,6 @@ body{
 .skip-link:focus{left:1rem;top:1rem;width:auto;height:auto;padding:.5rem 1rem;background:#000;color:#fff;border-radius:4px;z-index:9999}
 
 .honeypot{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
-
-.consent-banner{background:#0f172a;color:#f8fafc;padding:1rem 1.25rem;display:flex;flex-direction:column;gap:.75rem;margin:0;border-bottom:3px solid var(--accent-dark)}
-.consent-actions{display:flex;gap:.75rem;flex-wrap:wrap}
-.consent-note{margin:0;font-size:.9rem;color:#cbd5e1}
-.consent-text{margin:0;font-size:1rem;font-weight:600}
 
 .testimonial:focus{outline:3px solid rgba(167,197,231,0.6);outline-offset:2px}
 .form-message{margin:.75rem 0 0;font-size:.95rem;font-weight:500}

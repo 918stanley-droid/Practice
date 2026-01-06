@@ -12,9 +12,6 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('form submission shows success message', async ({ page }) => {
-  // Avoid consent prompt interfering with submit flow
-  await page.addInitScript(() => localStorage.setItem('analytics-consent', 'denied'));
-
   await page.goto('/');
   await page.fill('#name', 'Test User');
   await page.fill('#email', 'test@example.com');
@@ -24,5 +21,3 @@ test('form submission shows success message', async ({ page }) => {
   const msg = page.locator('#formMessage');
   await expect(msg).toContainText(/thanks/i);
 });
-
-// Note: Analytics consent flows are intentionally excluded from E2E to reduce flakiness.
