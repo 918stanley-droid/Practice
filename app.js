@@ -65,11 +65,10 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
-          mode: 'cors'
+          mode: 'no-cors'
         });
 
-        if (!res.ok) throw new Error('Network response was not ok');
-
+        // With no-cors, we can't check response.ok, so we assume success
         if (msg) {
           msg.textContent = 'Thanks — your request has been sent. We will contact you shortly.';
           msg.classList.remove('error');
