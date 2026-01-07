@@ -1,9 +1,9 @@
 # Moving 4U — Landing Page
 
-[![CI](https://github.com/918stanley-droid/moving4u/actions/workflows/ci.yml/badge.svg)](https://github.com/918stanley-droid/moving4u/actions/workflows/ci.yml)
+[![CI](https://github.com/918stanley-droid/actions/workflows/ci.yml/badge.svg)](https://github.com/918stanley-droid/actions/workflows/ci.yml)
 
 **Status:** CI is configured in `.github/workflows/ci.yml` and will run on push/PRs to `main`.
-**Website:** https://918stanley-droid.github.io/moving4u/
+**Website:** https://918stanley-droid.github.io/
 
 Small static landing page that collects quick leads via a Google Apps Script endpoint.
 

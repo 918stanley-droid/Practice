@@ -2,6 +2,15 @@
 // This function handles POST requests from the landing page and writes into the active sheet
 // It also sends an email notification for each new lead. Update `recipient` as needed.
 
+function doOptions(e) {
+  var output = ContentService.createTextOutput();
+  output.setMimeType(ContentService.MimeType.TEXT_HTML);
+  output.setHeader('Access-Control-Allow-Origin', '*');
+  output.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  output.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  return output;
+}
+
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSheet();
   var timestamp = new Date();
@@ -20,8 +29,12 @@ function doPost(e) {
   // Basic anti-spam: if honeypot field "website" is filled, log as SPAM and do not treat as a valid lead
   if (data.website && String(data.website || '').trim()) {
     sheet.appendRow([timestamp, 'SPAM', data.email || '', data.phone || '', data.description || '', 'honeypot=' + (data.website || '')]);
-    return ContentService.createTextOutput(JSON.stringify({ status: 'success', spam: true }))
+    var spamOutput = ContentService.createTextOutput(JSON.stringify({ status: 'success', spam: true }))
       .setMimeType(ContentService.MimeType.JSON);
+    spamOutput.setHeader('Access-Control-Allow-Origin', '*');
+    spamOutput.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+    spamOutput.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    return spamOutput;
   }
 
   sheet.appendRow([timestamp, data.name || '', data.email || '', data.phone || '', data.description || '']);
@@ -51,5 +64,8 @@ function doPost(e) {
   }
 
   return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
-    .setMimeType(ContentService.MimeType.JSON);
+    .setMimeType(ContentService.MimeType.JSON)
+    .setHeader('Access-Control-Allow-Origin', '*')
+    .setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
+    .setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
