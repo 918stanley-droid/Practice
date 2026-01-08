@@ -2,15 +2,6 @@
 // This function handles POST requests from the landing page and writes into the active sheet
 // It also sends an email notification for each new lead. Update `recipient` as needed.
 
-function doOptions(e) {
-  var output = ContentService.createTextOutput();
-  output.setMimeType(ContentService.MimeType.TEXT_HTML);
-  output.setHeader('Access-Control-Allow-Origin', '*');
-  output.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-  output.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  return output;
-}
-
 function doPost(e) {
   try {
     var sheet = SpreadsheetApp.getActiveSheet();
