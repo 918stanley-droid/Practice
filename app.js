@@ -60,21 +60,46 @@
       }
 
       const endpoint = form.dataset.endpoint;
+      
+      // Use iframe approach to bypass CORS with Google Apps Script
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.name = 'submission_frame_' + Date.now();
+      document.body.appendChild(iframe);
+      
       try {
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-          mode: 'no-cors'
+        // Create a temporary form and submit via iframe
+        const tempForm = document.createElement('form');
+        tempForm.method = 'POST';
+        tempForm.action = endpoint;
+        tempForm.target = iframe.name;
+        tempForm.style.display = 'none';
+        
+        // Add fields as form data (Google Apps Script expects form-urlencoded by default)
+        Object.keys(data).forEach(key => {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = key;
+          input.value = data[key];
+          tempForm.appendChild(input);
         });
-
-        // With no-cors, we can't check response.ok, so we assume success
+        
+        document.body.appendChild(tempForm);
+        tempForm.submit();
+        
+        // Show success message immediately
         if (msg) {
           msg.textContent = 'Thanks — your request has been sent. We will contact you shortly.';
           msg.classList.remove('error');
           msg.classList.add('success');
         }
         form.reset();
+        
+        // Clean up
+        setTimeout(() => {
+          document.body.removeChild(tempForm);
+          document.body.removeChild(iframe);
+        }, 1000);
       } catch (err) {
         if (msg) {
           msg.textContent = 'Sorry — we could not submit the form right now. Please try again later.';

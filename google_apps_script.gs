@@ -17,25 +17,25 @@ function doPost(e) {
   var data = {};
 
   try {
-    if (!e || !e.postData) {
-      throw new Error('Event or postData is undefined');
+    // Try to parse JSON first
+    if (e && e.postData && e.postData.contents) {
+      data = JSON.parse(e.postData.contents);
     }
-    data = JSON.parse(e.postData.contents || '{}');
   } catch (err) {
-    // fallback to parameters (in case form posts as application/x-www-form-urlencoded)
-    if (e && e.parameter) {
-      data.name = e.parameter.name;
-      data.email = e.parameter.email;
-      data.phone = e.parameter.phone;
-      data.description = e.parameter.description;
-    } else {
-      // If neither postData nor parameter work, log error and return
-      sheet.appendRow([new Date(), 'ERROR: doPost received invalid event', JSON.stringify(e || 'null')]);
-      var errorOutput = ContentService.createTextOutput(JSON.stringify({ status: 'error', message: 'Invalid request' }))
-        .setMimeType(ContentService.MimeType.JSON);
-      errorOutput.setHeader('Access-Control-Allow-Origin', '*');
-      return errorOutput;
-    }
+    // If JSON parsing fails, ignore
+  }
+
+  // Fall back to form parameters (from form submission)
+  if (!data.name && e && e.parameter) {
+    data.name = e.parameter.name || '';
+    data.email = e.parameter.email || '';
+    data.phone = e.parameter.phone || '';
+    data.description = e.parameter.description || '';
+  }
+
+  // If still no data, log error
+  if (!data.name && !data.email) {
+    sheet.appendRow([new Date(), 'ERROR: No valid data received', JSON.stringify(e || 'null')]);
   }
 
   // Basic anti-spam: if honeypot field "website" is filled, log as SPAM and do not treat as a valid lead
