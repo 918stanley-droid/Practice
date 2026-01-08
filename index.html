@@ -23,15 +23,15 @@
 
           <form id="leadForm" class="lead-form" data-endpoint="https://script.google.com/macros/s/AKfycbwngwJ6oKMmovtrHffnA-r1BRZxAoyiCeB3qc-WZJ1Yauvmy5seS6svNYcntqZhcQKZ/exec" novalidate aria-describedby="formMessage">
             <label class="sr-only" for="name">Full name</label>
-            <input id="name" name="name" type="text" placeholder="Full name" required />
+            <input id="name" name="name" type="text" placeholder="Full name" required autocomplete="name" />
 
             <label class="sr-only" for="email">Email</label>
-            <input id="email" name="email" type="email" placeholder="Email address" required />
+            <input id="email" name="email" type="email" placeholder="Email address" required autocomplete="email" />
 
             <label class="sr-only" for="phone">Phone</label>
-            <input id="phone" name="phone" type="tel" placeholder="Phone (optional)" />
+            <input id="phone" name="phone" type="tel" placeholder="Phone (optional)" autocomplete="tel" />
             <label class="sr-only" for="description">Brief description of move</label>
-            <textarea id="description" name="description" placeholder="Brief description of move (500 characters max)" maxlength="500"></textarea>
+            <textarea id="description" name="description" placeholder="Brief description of move (500 characters max)" maxlength="500" autocomplete="off"></textarea>
 
             <!-- Honeypot anti-spam field (visually hidden from users) -->
             <label class="honeypot" for="website">Leave this field empty</label>
